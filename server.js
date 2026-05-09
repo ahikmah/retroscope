@@ -266,12 +266,12 @@ const server = createServer(async (req, res) => {
     const token = url.pathname.split('/').pop()
     const row = db.prepare('SELECT * FROM email_verifications WHERE token = ?').get(token)
     if (!row || new Date(row.expires_at) < new Date()) {
-      res.writeHead(302, { Location: 'http://localhost:5274/?verified=expired' })
+      res.writeHead(302, { Location: `${process.env.APP_URL || 'http://localhost:5274'}/?verified=expired` })
       return res.end()
     }
     db.prepare('UPDATE users SET verified = 1 WHERE id = ?').run(row.user_id)
     db.prepare('DELETE FROM email_verifications WHERE token = ?').run(token)
-    res.writeHead(302, { Location: 'http://localhost:5274/?verified=true' })
+    res.writeHead(302, { Location: `${process.env.APP_URL || 'http://localhost:5274'}/?verified=true` })
     return res.end()
   }
 
