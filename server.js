@@ -147,7 +147,7 @@ async function sendBottleEmail(email, recipientName, senderName, message, sessio
 }
 
 async function sendVerificationEmail(email, name, token) {
-  const verifyUrl = `http://localhost:${PORT}/api/auth/verify/${token}`
+  const verifyUrl = `${process.env.APP_URL || `http://localhost:${PORT}`}/api/auth/verify/${token}`
   await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
